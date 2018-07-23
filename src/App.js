@@ -11,22 +11,11 @@ class App extends Component {
   state = {
     value: 1,
     person: [
-      {name: 'John', age: 34 },
-      {name: 'Karen', age: 24 },
-      {name: 'Bob', age: 45 }
+      {id:1,name: 'John', age: 34 },
+      {id:2,name: 'Karen', age: 24 },
+      {id:3,name: 'Bob', age: 45 }
     ],
     showPersons: false
-  }
-  switchNameHandler = (newName) => {
-    console.log(this.state.value);
-    let _name = newName || 'Joan';
-    this.setState({
-      person: [
-        {name: _name, age: 34 },
-        {name: 'Karen', age: 24 },
-        {name: 'Roberto', age: 45 }
-      ]
-    });
   }
   nameChangeHandler = (event) => {
     this.setState({
@@ -43,6 +32,13 @@ class App extends Component {
       showPersons: !doesShow
     });
   }
+  deletePersonHandler = (personIndex) => {
+    const persons = this.state.person;
+    persons.splice(personIndex, 1);
+    this.setState({
+      persons: persons
+    });
+  }
   render() {
     const orangeblock = {
       backgroundColor: '#fffffff'
@@ -54,9 +50,9 @@ class App extends Component {
       <div>
         { this.state.person.map((person, index) => {
           return <Person
-          click={ this.switchNameHandler }
+          click={() => this.deletePersonHandler(index) }
           name={ person.name }
-          key={ index }
+          key={ person.id }
           age={ person.age } />
         })}
       </div>
