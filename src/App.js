@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 
+// Option to if with jsx
+// { this.state.showPersons ? 
+//  : null
+// }
+
 class App extends Component {
   state = {
     value: 1,
@@ -9,7 +14,8 @@ class App extends Component {
       {name: 'John', age: 34 },
       {name: 'Karen', age: 24 },
       {name: 'Bob', age: 45 }
-    ]
+    ],
+    showPersons: false
   }
   switchNameHandler = (newName) => {
     console.log(this.state.value);
@@ -30,27 +36,38 @@ class App extends Component {
         {name: 'Roberto', age: 45 }
       ]
     });
-
+  }
+  togglePersonHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({
+      showPersons: !doesShow
+    });
   }
   render() {
-    return (
-      <div className="App">
-        <h1>Hi, I'm Carlos and these are my friends</h1>
-        <button onClick={ this.switchNameHandler } className="log">Switch name</button>
-        <Person
-          click={ this.switchNameHandler.bind(this, 'Charles') }
-          name={ this.state.person[0].name }
-          age={ this.state.person[0].age } />
-        <Person
+    const orangeblock = {
+      backgroundColor: '#fffffff'
+    }
+    let person = null;
+
+    if(this.state.showPersons) {
+      person = (
+      <div>
+        { this.state.person.map((person, index) => {
+          return <Person
           click={ this.switchNameHandler }
-          name={ this.state.person[1].name }
-          age={ this.state.person[1].age }
-          changed={ this.nameChangeHandler } >And her hobies is Running</Person>
-        <Person
-          click={ this.switchNameHandler }
-          name={ this.state.person[2].name }
-          age={ this.state.person[2].age } />
+          name={ person.name }
+          key={ index }
+          age={ person.age } />
+        })}
       </div>
+      );
+    }
+    return (
+      <div style={orangeblock} className="App">
+        <h1>Hi, I'm Carlos and these are my friends</h1>
+        <button onClick={ this.togglePersonHandler } className="log">Switch name</button>
+        { person }
+      </div> 
     );
   }
 }
